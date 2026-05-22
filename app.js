@@ -5,7 +5,6 @@ const app = express();
 //解决跨域问题
 app.use(cors());
 
-const PORT = 3000;
 
 //设置body-parser中间件 解析JSON请求体
 app.use(bodyParser.json());
@@ -20,10 +19,10 @@ app.use((req, res, next) => {
 }
 );
 
-//返回Cannot GET /是正常的，因为还没有设置路由
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
-})
+
+const PORT = 3000;
+
+
 
 const mysql = require('mysql2/promise');
 
@@ -33,7 +32,10 @@ const pool = mysql.createPool({
     password: 'kappa',
     database: 'kappa',
     waitForConnections: true,
-    connectionLimit: 10
+    connectionLimit: 10,      // 10 → 50
+    queueLimit: 0,            // 无限制排队
+    enableKeepAlive: true,    // 启用长连接
+    keepAliveInitialDelay: 0
 })
 
 //设置路由 可以正常返回Hello World!
@@ -88,6 +90,14 @@ files.forEach(file => {
     }
 })
 
-
+//返回Cannot GET /是正常的，因为还没有设置路由
+// 非集群启动 node app.js
+//app.listen(PORT, () => {
+//     console.log(`Server is running on port ${PORT}`);
+// })
+// ✅ 集群启动（每个 worker 都会执行）
+app.listen(PORT, () => {
+    console.log(`Worker ${process.pid} started on port ${PORT}`);
+});
 // 导出 app（不再导出 pool，因为已挂载到 app.locals）
 module.exports = app;
