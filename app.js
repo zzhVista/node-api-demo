@@ -19,17 +19,14 @@ app.use((req, res, next) => {
 }
 );
 
-
 const PORT = 3000;
-
-
 
 const mysql = require('mysql2/promise');
 
 const pool = mysql.createPool({
-    host: '127.0.0.1',
+    host: '10.25.90.52',
     user: 'kappa',
-    password: 'kappa',
+    password: 'CEB@monitor2026',
     database: 'kappa',
     waitForConnections: true,
     connectionLimit: 10,      // 10 → 50

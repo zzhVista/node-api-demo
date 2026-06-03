@@ -15,8 +15,6 @@ https://mp.weixin.qq.com/s/Lc-03hlK_fToi7YvEOB-vA
 # git push -u origin main
 
 
-
-
 # 压力测试autocannon -c 100 -d 20 http://127.0.0.1:3000/api/users/13
 
 # 启动方式 node app.js 、 node --watch app.js
